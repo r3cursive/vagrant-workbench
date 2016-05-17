@@ -1,0 +1,23 @@
+---
+- hosts: all
+  sudo: True
+
+  tasks:
+    - name: Installing some python-dev, build-essential, and requests[security] prereqs
+      apt: name={{ item }} state=present
+      with_items:
+        - build-essential
+        - python-dev
+        - python-setuptools
+        - libffi-dev
+        - libssl-dev
+        - golang
+
+    - name: easy_install pip
+      easy_install: name=pip state=latest
+
+    - name: Installing iPython, requests[security]
+      pip: name={{ item }} state=latest extra_args='-I'
+      with_items:
+        - requests[security]
+        - ipython[all]
